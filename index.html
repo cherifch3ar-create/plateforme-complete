@@ -3,80 +3,241 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Un projet de messagerie professionnelle avec adresse personnalisée et grand espace de stockage.">
-  <title>Mail Pro Company — Messagerie professionnelle</title>
+  <title>Mail Pro Company</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: { extend: { colors: {
-        mail: { blue: '#4285f4', red: '#ea4335', yellow: '#fbbc04', green: '#34a853' }
-      } } }
-    };
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: '#4285f4',
+              red: '#ea4335',
+              yellow: '#fbbc04',
+              green: '#34a853',
+              dark: '#202124',
+              panel: '#f8f9fa',
+              text: '#1f2937'
+            }
+          }
+        }
+      }
+    }
   </script>
+  <style>
+    body { scroll-behavior: smooth; }
+    .glass { backdrop-filter: blur(12px); }
+  </style>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
-  <header class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-    <a href="#accueil" class="flex items-center gap-3" aria-label="Mail Pro Company, accueil">
-      <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl font-black shadow ring-1 ring-slate-200">
-        <span class="text-mail-blue">M</span>
-      </span>
-      <span class="text-lg font-bold">Mail Pro <span class="text-mail-blue">Company</span></span>
-    </a>
-    <a href="#offre" class="rounded-lg bg-mail-blue px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-600">Découvrir l’offre</a>
-  </header>
-
-  <main id="accueil">
-    <section class="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
-      <div>
-        <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
-          <span class="h-2 w-2 rounded-full bg-mail-green"></span>
-          Un projet de messagerie pour les professionnels
+<body class="bg-slate-50 text-slate-800 antialiased">
+  <header class="bg-white/90 glass sticky top-0 z-20 border-b border-slate-200">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-slate-200">
+          <span class="text-xl font-black text-brand-red">M</span>
         </div>
-        <h1 class="max-w-2xl text-4xl font-black leading-tight tracking-tight text-slate-900 md:text-6xl">
-          Votre adresse pro, votre espace de travail.
-        </h1>
-        <p class="mt-6 max-w-xl text-lg leading-8 text-slate-600">
-          Créez une adresse e-mail professionnelle personnalisée avec votre nom de domaine et profitez d’un grand espace de stockage pour vos messages et pièces jointes.
-        </p>
-        <a href="#offre" class="mt-8 inline-flex rounded-xl bg-mail-blue px-6 py-3.5 font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-600">
-          En savoir plus
-        </a>
-        <p class="mt-4 text-sm text-slate-500">Compatible avec les adresses de contact de tous les fournisseurs e-mail.</p>
+        <div>
+          <div class="text-sm font-medium text-slate-500">Mail Pro</div>
+          <div class="text-lg font-black text-slate-800">Company</div>
+        </div>
       </div>
 
-      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl md:p-8">
-        <div class="flex items-center gap-2 border-b border-slate-100 pb-5">
-          <span class="h-3 w-3 rounded-full bg-mail-red"></span>
-          <span class="h-3 w-3 rounded-full bg-mail-yellow"></span>
-          <span class="h-3 w-3 rounded-full bg-mail-green"></span>
-          <span class="ml-3 text-sm font-semibold text-slate-500">Votre messagerie professionnelle</span>
+      <nav class="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
+        <a href="#solution" class="hover:text-brand-blue">Solution</a>
+        <a href="#fonctionnalites" class="hover:text-brand-blue">Fonctionnalités</a>
+        <a href="#stockage" class="hover:text-brand-blue">Stockage</a>
+        <a href="#contact" class="hover:text-brand-blue">Contact</a>
+      </nav>
+
+      <a href="#contact" class="rounded-xl bg-brand-blue px-4 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-200 transition hover:bg-blue-600">
+        Demander un devis
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
+      <div>
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-blue-700">
+          <span class="h-2.5 w-2.5 rounded-full bg-brand-green"></span>
+          Messagerie professionnelle
         </div>
-        <div class="py-8">
-          <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-3xl">✉️</div>
-          <h2 class="text-2xl font-bold text-slate-900">Tout votre e-mail, au même endroit</h2>
-          <p class="mt-3 leading-7 text-slate-600">Une adresse à votre image, une boîte claire et de la place pour vos échanges professionnels.</p>
-          <div class="mt-7 space-y-4">
-            <div class="flex gap-3"><span class="font-bold text-mail-green">✓</span><span>Adresse personnalisée avec votre domaine</span></div>
-            <div class="flex gap-3"><span class="font-bold text-mail-green">✓</span><span>Grand espace de stockage prévu pour vos e-mails</span></div>
-            <div class="flex gap-3"><span class="font-bold text-mail-green">✓</span><span>Accès pratique sur ordinateur et mobile</span></div>
+
+        <h1 class="max-w-xl text-4xl font-black leading-tight tracking-tight text-slate-900 md:text-6xl">
+          Créez votre adresse e-mail <span class="text-brand-blue">professionnelle</span>
+        </h1>
+
+        <p class="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+          Une solution de messagerie dédiée à votre entreprise, pensée pour sécuriser vos échanges, offrir un grand espace de stockage et renforcer votre image de marque.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#contact" class="rounded-xl bg-brand-blue px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-200 hover:bg-blue-600">
+            Démarrer
+          </a>
+          <a href="#solution" class="rounded-xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-bold text-slate-700 hover:bg-slate-100">
+            Voir la solution
+          </a>
+        </div>
+
+        <div class="mt-10 flex flex-wrap gap-8 text-sm text-slate-500">
+          <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-brand-green"></span> Adresse pro personnalisée</div>
+          <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-brand-blue"></span> Stockage généreux</div>
+          <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-brand-red"></span> Sécurisé</div>
+        </div>
+      </div>
+
+      <div class="rounded-[28px] border border-slate-200 bg-white p-5 shadow-2xl shadow-slate-200">
+        <div class="flex items-center gap-2 border-b border-slate-100 pb-4">
+          <span class="h-3 w-3 rounded-full bg-brand-red"></span>
+          <span class="h-3 w-3 rounded-full bg-brand-yellow"></span>
+          <span class="h-3 w-3 rounded-full bg-brand-green"></span>
+          <span class="ml-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Mail Pro Company</span>
+        </div>
+
+        <div class="space-y-4 p-4 pt-6">
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            <p class="text-xs uppercase tracking-[0.18em] text-slate-500">Boîte mail</p>
+            <h3 class="mt-2 text-2xl font-black text-slate-900">contact@votreentreprise.com</h3>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="rounded-2xl border border-slate-200 bg-white p-4">
+              <div class="text-xs uppercase tracking-[0.18em] text-slate-500">Stockage</div>
+              <div class="mt-2 text-2xl font-black text-brand-blue">500 Go</div>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-4">
+              <div class="text-xs uppercase tracking-[0.18em] text-slate-500">Sécurité</div>
+              <div class="mt-2 text-2xl font-black text-brand-green">SSL</div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            <div class="flex items-center justify-between text-sm font-medium text-slate-600">
+              <span>Utilisation du stockage</span>
+              <span>12%</span>
+            </div>
+            <div class="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-slate-200">
+              <div class="h-full w-[12%] rounded-full bg-brand-blue"></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="offre" class="border-y border-slate-200 bg-white px-6 py-16">
-      <div class="mx-auto max-w-4xl text-center">
-        <h2 class="text-3xl font-bold text-slate-900">Une messagerie pensée pour votre entreprise</h2>
-        <p class="mt-4 text-lg leading-8 text-slate-600">L’objectif : permettre à chaque entreprise de disposer d’adresses e-mail professionnelles et d’un espace de stockage adapté à ses besoins.</p>
-        <div class="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-left text-sm leading-6 text-amber-900">
-          <strong>Prototype en préparation :</strong> la création réelle de boîtes e-mail, le stockage et les inscriptions ne sont pas encore activés. Aucun compte ni aucune adresse e-mail n’est créé par cette page. La mise en service nécessitera un domaine et un fournisseur de messagerie.
+    <section id="solution" class="bg-white px-6 py-16">
+      <div class="mx-auto max-w-6xl">
+        <div class="text-center">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-brand-blue">Notre solution</p>
+          <h2 class="mt-3 text-3xl font-black text-slate-900 md:text-4xl">Une messagerie professionnelle à la hauteur de votre image</h2>
+        </div>
+
+        <div class="mt-12 grid gap-8 md:grid-cols-3">
+          <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-2xl">📧</div>
+            <h3 class="text-xl font-bold text-slate-900">Adresses professionnelles</h3>
+            <p class="mt-3 text-slate-600">Créez des boîtes mail personnalisées avec le nom de votre entreprise et votre domaine.</p>
+          </div>
+
+          <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-green-100 text-2xl">💾</div>
+            <h3 class="text-xl font-bold text-slate-900">Grand espace de stockage</h3>
+            <p class="mt-3 text-slate-600">Gardez toutes vos communications et vos pièces jointes sans limite gênante.</p>
+          </div>
+
+          <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-red-100 text-2xl">🔒</div>
+            <h3 class="text-xl font-bold text-slate-900">Sécurité et fiabilité</h3>
+            <p class="mt-3 text-slate-600">Une infrastructure pensée pour la confidentialité, la stabilité et la disponibilité.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fonctionnalites" class="bg-slate-100 px-6 py-16">
+      <div class="mx-auto max-w-6xl">
+        <div class="grid items-center gap-10 md:grid-cols-2">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-brand-blue">Fonctionnalités</p>
+            <h2 class="mt-3 text-3xl font-black text-slate-900">Une plateforme pensée pour les équipes</h2>
+            <ul class="mt-6 space-y-4 text-slate-600">
+              <li class="flex gap-3"><span class="text-brand-green">✓</span><span>Gestion centralisée des comptes e-mail</span></li>
+              <li class="flex gap-3"><span class="text-brand-green">✓</span><span>Accès par web, mobile et bureau</span></li>
+              <li class="flex gap-3"><span class="text-brand-green">✓</span><span>Réception et envoi depuis une interface professionnelle</span></li>
+              <li class="flex gap-3"><span class="text-brand-green">✓</span><span>Administration simple pour l’entreprise</span></li>
+            </ul>
+          </div>
+
+          <div class="rounded-[28px] border border-slate-200 bg-white p-6 shadow-xl">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+              <span class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Entreprise</span>
+              <span class="rounded-full bg-brand-blue/10 px-3 py-1 text-xs font-bold text-brand-blue">Actif</span>
+            </div>
+            <div class="mt-6 space-y-4">
+              <div class="flex items-center justify-between rounded-xl bg-slate-50 p-3">
+                <span class="text-slate-600">Comptes actifs</span>
+                <span class="text-xl font-black text-slate-900">24</span>
+              </div>
+              <div class="flex items-center justify-between rounded-xl bg-slate-50 p-3">
+                <span class="text-slate-600">E-mails reçus</span>
+                <span class="text-xl font-black text-slate-900">1 286</span>
+              </div>
+              <div class="flex items-center justify-between rounded-xl bg-slate-50 p-3">
+                <span class="text-slate-600">Stockage disponible</span>
+                <span class="text-xl font-black text-slate-900">500 Go</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stockage" class="bg-white px-6 py-16">
+      <div class="mx-auto max-w-5xl rounded-[30px] border border-slate-200 bg-gradient-to-r from-slate-900 to-slate-800 p-10 text-white shadow-2xl">
+        <div class="grid gap-8 md:grid-cols-2 md:items-center">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-blue-300">Stockage illimité pensé pour votre croissance</p>
+            <h2 class="mt-3 text-3xl font-black md:text-4xl">Un espace suffisant pour vos échanges professionnels</h2>
+          </div>
+          <div class="rounded-2xl border border-slate-700 bg-slate-800/60 p-6">
+            <div class="flex items-center justify-between text-sm text-slate-300">
+              <span>Capacité totale</span>
+              <span>500 Go</span>
+            </div>
+            <div class="mt-4 h-3 w-full overflow-hidden rounded-full bg-slate-700">
+              <div class="h-full w-[18%] rounded-full bg-brand-blue"></div>
+            </div>
+            <div class="mt-4 text-sm text-slate-300">75 Go utilisés sur 500 Go</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="bg-slate-50 px-6 py-16">
+      <div class="mx-auto max-w-4xl rounded-[28px] border border-slate-200 bg-white p-8 shadow-xl">
+        <div class="text-center">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-brand-blue">Contact</p>
+          <h2 class="mt-3 text-3xl font-black text-slate-900">Discutons de votre projet de messagerie</h2>
+        </div>
+        <div class="mt-8 grid gap-6 md:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Email</p>
+            <p class="mt-3 text-lg font-bold text-slate-900">contact@mailprocompany.com</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Service</p>
+            <p class="mt-3 text-lg font-bold text-slate-900">Messagerie professionnelle</p>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="mx-auto max-w-7xl px-6 py-8 text-center text-sm text-slate-500">
-    Mail Pro Company — Projet indépendant de messagerie professionnelle.
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 text-sm text-slate-500">
+      <span>Mail Pro Company</span>
+      <span>© 2026 Tous droits réservés</span>
+    </div>
   </footer>
 </body>
 </html>
