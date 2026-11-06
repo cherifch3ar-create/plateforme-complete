@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail Pro Company - Plateforme Complète</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    colors: {
+                        gmail: {
+                            red: '#ea4335',
+                            blue: '#4285f4',
+                            green: '#34a853',
+                            yellow: '#fbbc04',
+                            darkbg: '#202124',
+                            darkborder: '#3c4043',
+                            hover: '#f1f3f4',
+                            active: '#e8f0fe',
+                            darkhover: '#303134'
+                        },
+                        admin: {
+                            dark: '#0f172a',
+                            panel: '#1e293b',
+                            border: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #dadce0; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #5f6368; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="h-screen w-full overflow-hidden font-sans antialiased bg-white dark:bg-gmail-darkbg text-slate-800 dark:text-slate-200">
+
+    <!-- ==========================================
+         VUE 1 : PAGE DE CONNEXION (LOGIN)
+         ========================================== -->
+    <div id="view-login" class="fade-in h-full flex flex-col justify-between selection:bg-gmail-blue selection:text-white overflow-y-auto">
+        <!-- En-tête -->
+        <header class="w-full p-6 flex justify-between items-center max-w-7xl mx-auto">
+            <div class="flex items-center space-x-2">
+                <div class="flex items-center justify-center relative w-8 h-8">
+                    <svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.25 7.5L12 14.25L21.75 7.5" stroke="#ea4335" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2.25 7.5V18C2.25 18.8284 2.92157 19.5 3.75 19.5H20.25C21.0784 19.5 21.75 18.8284 21.75 18V7.5" stroke="#4285f4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <span class="font-bold tracking-tight text-lg text-slate-600 dark:text-slate-300">
+                    Gmail <span class="text-gmail-blue">Pro</span>
+                </span>
+            </div>
+            <!-- Bouton Admin Secret -->
+            <button onclick="switchAppView('view-admin')" class="text-xs font-semibold text-slate-400 hover:text-gmail-red transition">Mode Admin</button>
+        </header>
+
+        <!-- Formulaire -->
+        <main class="flex-1 flex items-center justify-center px-4 py-12">
+            <div class="w-full max-w-md space-y-6 bg-white dark:bg-gmail-darkbg p-8 sm:p-10 rounded-2xl border border-slate-200 dark:border-gmail-darkborder sm:shadow-lg">
+                <div class="text-center space-y-3">
+                    <div class="flex justify-center mb-2 space-x-1">
+                        <div class="w-2 h-2 rounded-full bg-gmail-blue"></div>
+                        <div class="w-2 h-2 rounded-full bg-gmail-red"></div>
+                        <div class="w-2 h-2 rounded-full bg-gmail-yellow"></div>
+                        <div class="w-2 h-2 rounded-full bg-gmail-green"></div>
+                    </div>
+                    <h1 class="text-2xl font-medium tracking-tight">Connexion</h1>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Accédez à votre espace de stockage email illimité</p>
+                </div>
+
+                <form class="space-y-5" onsubmit="event.preventDefault(); switchAppView('view-inbox');">
+                    <div class="space-y-4">
+                        <input type="email" required placeholder="Adresse e-mail (ex: contact@toti.com)" class="w-full px-4 py-3.5 rounded-md bg-transparent border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:border-gmail-blue focus:ring-1 focus:ring-gmail-blue transition">
+                        <input type="password" required placeholder="Mot de passe" class="w-full px-4 py-3.5 rounded-md bg-transparent border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:border-gmail-blue focus:ring-1 focus:ring-gmail-blue transition">
+                    </div>
+                    <div class="flex items-center justify-between pt-6">
+                        <a href="#" class="text-sm font-medium text-gmail-blue hover:underline">Créer un compte</a>
+                        <button type="submit" class="py-2 px-6 rounded-md bg-gmail-blue hover:bg-blue-600 text-white text-sm font-medium transition duration-200">Suivant</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- ==========================================
+         VUE 2 : BOÎTE DE RÉCEPTION (INBOX)
+         ========================================== -->
+    <div id="view-inbox" class="fade-in hidden h-full flex flex-col">
+        <!-- Top Navbar -->
+        <header class="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-gmail-darkborder shrink-0">
+            <div class="flex items-center min-w-[238px]">
+                <div class="flex items-center ml-2 space-x-2">
+                    <div class="w-8 h-8">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.25 7.5L12 14.25L21.75 7.5" stroke="#ea4335" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.25 7.5V18C2.25 18.8284 2.92157 19.5 3.75 19.5H20.25C21.0784 19.5 21.75 18.8284 21.75 18V7.5" stroke="#4285f4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="text-xl font-medium text-slate-600 dark:text-slate-300">Gmail <span class="text-gmail-blue font-semibold">Pro</span></span>
+                </div>
+            </div>
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-2xl ml-4">
+                <div class="flex items-center bg-slate-100 dark:bg-gmail-darkhover rounded-full px-4 py-2 focus-within:bg-white focus-within:shadow-md transition-all">
+                    <input type="text" placeholder="Rechercher dans les e-mails" class="w-full bg-transparent border-none focus:ring-0 px-3 outline-none">
+                </div>
+            </div>
+            <!-- Bouton Déconnexion -->
+            <div class="ml-4 flex items-center space-x-4">
+                <button onclick="switchAppView('view-admin')" class="text-xs font-bold text-gmail-red hover:underline hidden sm:block">Admin Mode</button>
+                <button onclick="switchAppView('view-login')" class="w-8 h-8 rounded-full bg-gmail-green text-white font-bold text-sm shadow-sm hover:opacity-80 transition">T</button>
+            </div>
+        </header>
+
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Sidebar -->
+            <aside class="w-[256px] hidden md:flex flex-col py-2 pr-4 shrink-0">
+                <div class="pl-2 mb-4">
+                    <button class="flex items-center space-x-3 bg-[#c2e7ff] dark:bg-blue-900/30 text-slate-900 dark:text-blue-300 font-medium px-5 py-4 rounded-2xl shadow-sm transition hover:bg-[#b3d3e8]">
+                        <span class="text-xl font-bold">+</span>
+                        <span>Nouveau message</span>
+                    </button>
+                </div>
+                <nav class="flex-1 space-y-0.5">
+                    <a href="#" class="flex items-center justify-between px-6 py-1.5 bg-gmail-active dark:bg-gmail-blue/20 text-gmail-blue dark:text-blue-300 font-bold rounded-r-full mr-2">
+                        <span>Boîte de réception</span>
+                        <span class="text-xs">1</span>
+                    </a>
+                </nav>
+                <div class="p-4 mx-2 mt-auto bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold">FORFAIT ENTERPRISE</span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mb-2">
+                        <div class="bg-gmail-blue h-1.5 rounded-full" style="width: 15%"></div>
+                    </div>
+                    <p class="text-xs text-slate-500">75 Go utilisés sur 500 Go</p>
+                </div>
+            </aside>
+
+            <!-- Liste Emails -->
+            <main class="flex-1 flex flex-col md:rounded-tl-2xl border-t border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-gmail-darkbg">
+                <div class="flex-1 overflow-y-auto">
+                    <!-- Email -->
+                    <div onclick="alert('Module de lecture en cours d\'intégration.');" class="flex items-center px-4 py-2.5 border-b border-slate-100 dark:border-slate-800 hover:shadow-md cursor-pointer font-bold group">
+                        <div class="w-48 sm:w-64 truncate">L'équipe Gmail Pro</div>
+                        <div class="flex-1 truncate pr-4 text-sm">
+                            <span>Bienvenue sur votre espace de messagerie</span>
+                            <span class="text-slate-400 font-normal mx-2">-</span>
+                            <span class="text-slate-500 font-normal">Votre abonnement est actif...</span>
+                        </div>
+                        <div class="text-xs text-gmail-blue">10:42</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         VUE 3 : PANNEAU ADMIN (RÉPARATION)
+         ========================================== -->
+    <div id="view-admin" class="fade-in hidden h-full flex flex-col bg-slate-50 dark:bg-admin-dark text-slate-800 dark:text-slate-200">
+        <!-- Header Admin -->
+        <header class="h-16 bg-white dark:bg-admin-panel border-b border-slate-200 dark:border-admin-border flex items-center justify-between px-8 shrink-0">
+            <div class="flex items-center space-x-4">
+                <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-bold text-white">T</div>
+                <h1 class="text-xl font-semibold">Outil de modification des emails</h1>
+            </div>
+            <div class="flex items-center w-1/3">
+                <input type="text" id="subscriber-search" placeholder="client@entreprise.com" class="w-full px-4 py-2 bg-slate-100 dark:bg-admin-dark rounded-lg text-sm outline-none">
+                <button onclick="loadAdminEmails()" class="ml-3 bg-slate-800 text-white px-4 py-2 rounded-lg text-sm">Rechercher</button>
+            </div>
+            <button onclick="switchAppView('view-login')" class="text-sm font-bold text-slate-500 hover:text-white ml-4">Quitter Admin</button>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-8">
+            <div id="admin-welcome" class="text-center mt-20">
+                <h2 class="text-lg font-medium text-slate-500">Recherchez un abonné pour accéder à sa boîte</h2>
+            </div>
+
+            <div id="admin-table" class="hidden bg-white dark:bg-admin-panel rounded-xl border border-slate-200 dark:border-admin-border overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-200 dark:border-admin-border flex justify-between bg-slate-50 dark:bg-slate-800/50">
+                    <h3 class="font-semibold">Boîte chargée : <span id="admin-current-user" class="text-blue-500"></span></h3>
+                </div>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 dark:bg-slate-800 text-slate-500 text-xs uppercase">
+                            <th class="px-6 py-3 font-medium">Expéditeur</th>
+                            <th class="px-6 py-3 font-medium">Sujet</th>
+                            <th class="px-6 py-3 font-medium text-right">Actions Admin</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-admin-border text-sm">
+                        <tr>
+                            <td class="px-6 py-4 font-bold">Direction</td>
+                            <td class="px-6 py-4">Bilan trimestriel</td>
+                            <td class="px-6 py-4 text-right space-x-2">
+                                <button onclick="openEditModal()" class="px-3 py-1.5 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded text-xs font-semibold">✏️ Modifier</button>
+                                <button onclick="this.closest('tr').remove(); alert('Email supprimé');" class="px-3 py-1.5 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded text-xs font-semibold">🗑️ Supprimer</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE EDITION ADMIN -->
+    <div id="edit-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-admin-panel w-full max-w-2xl rounded-2xl p-6 shadow-2xl">
+            <h2 class="text-lg font-bold mb-4">Édition brute de l'email</h2>
+            <div class="space-y-4">
+                <input type="text" value="Direction" class="w-full p-2 rounded bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700">
+                <input type="text" value="Bilan trimestriel" class="w-full p-2 rounded bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700">
+                <textarea rows="4" class="w-full p-2 rounded bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700">Voici le contenu à modifier...</textarea>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button onclick="closeEditModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded font-medium">Annuler</button>
+                <button onclick="closeEditModal(); alert('Modifications sauvegardées sur le serveur.');" class="px-4 py-2 bg-blue-600 text-white rounded font-bold">Forcer la sauvegarde</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de navigation interne -->
+    <script>
+        function switchAppView(viewId) {
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-inbox').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            
+            document.getElementById(viewId).classList.remove('hidden');
+        }
+
+        function loadAdminEmails() {
+            const input = document.getElementById('subscriber-search').value;
+            if (input.trim() === '') return alert("Saisissez un email");
+            document.getElementById('admin-welcome').classList.add('hidden');
+            document.getElementById('admin-table').classList.remove('hidden');
+            document.getElementById('admin-current-user').innerText = input;
+        }
+
+        function openEditModal() {
+            document.getElementById('edit-modal').classList.remove('hidden');
+            document.getElementById('edit-modal').classList.add('flex');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+            document.getElementById('edit-modal').classList.remove('flex');
+        }
+    </script>
+</body>
+</html>
