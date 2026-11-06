@@ -1,314 +1,82 @@
 <!DOCTYPE html>
 <html lang="fr" class="h-full">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plateforme Entreprise | Inscription & Connexion</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'media',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            blue: '#2563eb',
-                            dark: '#0f172a',
-                            panel: '#111827',
-                            accent: '#f8fafc',
-                            success: '#16a34a',
-                            danger: '#dc2626'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .glass {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        .fade-in { animation: fadeIn 0.35s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Un projet de messagerie professionnelle avec adresse personnalisée et grand espace de stockage.">
+  <title>Mail Pro Company — Messagerie professionnelle</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: {
+        mail: { blue: '#4285f4', red: '#ea4335', yellow: '#fbbc04', green: '#34a853' }
+      } } }
+    };
+  </script>
 </head>
-<body class="h-screen w-full overflow-hidden font-sans bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+<body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
+  <header class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+    <a href="#accueil" class="flex items-center gap-3" aria-label="Mail Pro Company, accueil">
+      <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl font-black shadow ring-1 ring-slate-200">
+        <span class="text-mail-blue">M</span>
+      </span>
+      <span class="text-lg font-bold">Mail Pro <span class="text-mail-blue">Company</span></span>
+    </a>
+    <a href="#offre" class="rounded-lg bg-mail-blue px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-600">Découvrir l’offre</a>
+  </header>
 
-    <div class="h-full w-full flex items-center justify-center p-4">
-        <div class="w-full max-w-6xl h-[92%] rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-
-            <!-- HEADER -->
-            <header class="h-20 flex items-center justify-between px-6 md:px-10 border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 glass">
-                <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-brand-blue text-white font-black text-xl flex items-center justify-center shadow-md">P</div>
-                    <div>
-                        <div class="text-xs uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">Entreprise</div>
-                        <div class="font-bold text-lg">Plateforme Pro</div>
-                    </div>
-                </div>
-
-                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
-                    <a href="#" class="hover:text-brand-blue transition">Accueil</a>
-                    <a href="#features" class="hover:text-brand-blue transition">Fonctionnalités</a>
-                    <a href="#pricing" class="hover:text-brand-blue transition">Tarifs</a>
-                    <a href="#contact" class="hover:text-brand-blue transition">Contact</a>
-                </nav>
-
-                <button id="toggleAuthBtn" class="px-4 py-2 rounded-xl bg-brand-blue text-white text-sm font-semibold hover:bg-blue-700 transition shadow-md">
-                    Créer un compte
-                </button>
-            </header>
-
-            <main class="grid md:grid-cols-2 h-[calc(100%-5rem)]">
-                <!-- LEFT: HERO -->
-                <section class="flex flex-col justify-center px-6 md:px-10 lg:px-14 py-8 bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800">
-                    <div class="space-y-6 fade-in">
-                        <span class="inline-flex items-center rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 px-3 py-1 text-xs font-bold uppercase tracking-wider">
-                            Sécurisé • Professionnel • Accessible
-                        </span>
-
-                        <h1 class="text-4xl md:text-5xl font-black leading-tight text-slate-900 dark:text-white">
-                            Votre espace de travail <span class="text-brand-blue">simplifié</span>
-                        </h1>
-
-                        <p class="text-lg text-slate-600 dark:text-slate-300">
-                            Gérez vos e-mails, votre équipe et vos notifications depuis une unique plateforme moderne.
-                            Compatible avec les adresses e-mail professionnelles comme Yahoo, Outlook, iCloud, etc.
-                        </p>
-
-                        <div class="flex flex-wrap gap-3">
-                            <button onclick="showForm('signup')" class="px-5 py-3 rounded-xl bg-brand-blue text-white font-semibold shadow-lg hover:bg-blue-700 transition">
-                                Créer mon accès
-                            </button>
-                            <button onclick="showForm('login')" class="px-5 py-3 rounded-xl bg-slate-200 dark:bg-slate-800 dark:text-white text-slate-800 font-semibold hover:bg-slate-300 dark:hover:bg-slate-700 transition">
-                                J’ai déjà un compte
-                            </button>
-                        </div>
-
-                        <div id="features" class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
-                            <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
-                                <div class="text-2xl mb-2">📧</div>
-                                <div class="font-semibold">Messagerie</div>
-                                <div class="text-sm text-slate-500 dark:text-slate-400">Inbox centralisée</div>
-                            </div>
-                            <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
-                                <div class="text-2xl mb-2">🔒</div>
-                                <div class="font-semibold">Sécurité</div>
-                                <div class="text-sm text-slate-500 dark:text-slate-400">Authentification</div>
-                            </div>
-                            <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
-                                <div class="text-2xl mb-2">📈</div>
-                                <div class="font-semibold">Suivi</div>
-                                <div class="text-sm text-slate-500 dark:text-slate-400">Rapports & KPI</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- RIGHT: AUTH CARD -->
-                <section class="flex items-center justify-center bg-slate-100 dark:bg-slate-950 p-6 md:p-10">
-                    <div class="w-full max-w-md">
-                        <div id="signup-panel" class="fade-in bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-xl p-6 md:p-8">
-                            <div class="mb-6">
-                                <p class="text-xs uppercase tracking-[0.25em] text-brand-blue font-bold">Inscription</p>
-                                <h2 class="text-2xl font-bold mt-2">Créer votre compte</h2>
-                            </div>
-
-                            <form id="signupForm" class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium mb-1.5">Nom complet</label>
-                                    <input type="text" id="signup-name" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue" placeholder="Jean Dupont" />
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium mb-1.5">Adresse e-mail</label>
-                                    <input type="email" id="signup-email" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue" placeholder="jean@entreprise.com" />
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium mb-1.5">Mot de passe</label>
-                                    <input type="password" id="signup-password" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue" placeholder="••••••••" />
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium mb-1.5">Entreprise</label>
-                                    <input type="text" id="signup-company" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue" placeholder="Nom de votre société" />
-                                </div>
-
-                                <button type="submit" class="w-full py-3 rounded-xl bg-brand-blue text-white font-semibold shadow hover:bg-blue-700 transition">
-                                    Créer mon accès
-                                </button>
-                            </form>
-                        </div>
-
-                        <div id="login-panel" class="hidden fade-in bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-xl p-6 md:p-8">
-                            <div class="mb-6">
-                                <p class="text-xs uppercase tracking-[0.25em] text-brand-blue font-bold">Connexion</p>
-                                <h2 class="text-2xl font-bold mt-2">Accéder à mon espace</h2>
-                            </div>
-
-                            <form id="loginForm" class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium mb-1.5">E-mail</label>
-                                    <input type="email" id="login-email" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue" placeholder="jean@entreprise.com" />
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium mb-1.5">Mot de passe</label>
-                                    <input type="password" id="login-password" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-blue" placeholder="••••••••" />
-                                </div>
-
-                                <button type="submit" class="w-full py-3 rounded-xl bg-slate-900 dark:bg-slate-700 text-white font-semibold hover:bg-slate-800 dark:hover:bg-slate-600 transition">
-                                    Se connecter
-                                </button>
-                            </form>
-                        </div>
-
-                        <div id="statusBox" class="hidden mt-5 rounded-2xl border p-4 text-sm font-medium"></div>
-                    </div>
-                </section>
-            </main>
+  <main id="accueil">
+    <section class="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
+      <div>
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
+          <span class="h-2 w-2 rounded-full bg-mail-green"></span>
+          Un projet de messagerie pour les professionnels
         </div>
-    </div>
+        <h1 class="max-w-2xl text-4xl font-black leading-tight tracking-tight text-slate-900 md:text-6xl">
+          Votre adresse pro, votre espace de travail.
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+          Créez une adresse e-mail professionnelle personnalisée avec votre nom de domaine et profitez d’un grand espace de stockage pour vos messages et pièces jointes.
+        </p>
+        <a href="#offre" class="mt-8 inline-flex rounded-xl bg-mail-blue px-6 py-3.5 font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-600">
+          En savoir plus
+        </a>
+        <p class="mt-4 text-sm text-slate-500">Compatible avec les adresses de contact de tous les fournisseurs e-mail.</p>
+      </div>
 
-    <script>
-        const signupPanel = document.getElementById('signup-panel');
-        const loginPanel = document.getElementById('login-panel');
-        const toggleAuthBtn = document.getElementById('toggleAuthBtn');
-        const statusBox = document.getElementById('statusBox');
+      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl md:p-8">
+        <div class="flex items-center gap-2 border-b border-slate-100 pb-5">
+          <span class="h-3 w-3 rounded-full bg-mail-red"></span>
+          <span class="h-3 w-3 rounded-full bg-mail-yellow"></span>
+          <span class="h-3 w-3 rounded-full bg-mail-green"></span>
+          <span class="ml-3 text-sm font-semibold text-slate-500">Votre messagerie professionnelle</span>
+        </div>
+        <div class="py-8">
+          <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-3xl">✉️</div>
+          <h2 class="text-2xl font-bold text-slate-900">Tout votre e-mail, au même endroit</h2>
+          <p class="mt-3 leading-7 text-slate-600">Une adresse à votre image, une boîte claire et de la place pour vos échanges professionnels.</p>
+          <div class="mt-7 space-y-4">
+            <div class="flex gap-3"><span class="font-bold text-mail-green">✓</span><span>Adresse personnalisée avec votre domaine</span></div>
+            <div class="flex gap-3"><span class="font-bold text-mail-green">✓</span><span>Grand espace de stockage prévu pour vos e-mails</span></div>
+            <div class="flex gap-3"><span class="font-bold text-mail-green">✓</span><span>Accès pratique sur ordinateur et mobile</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        function showForm(type) {
-            const isSignup = type === 'signup';
-            signupPanel.classList.toggle('hidden', !isSignup);
-            loginPanel.classList.toggle('hidden', isSignup);
-            toggleAuthBtn.textContent = isSignup ? 'Se connecter' : 'Créer un compte';
-            statusBox.classList.add('hidden');
-        }
+    <section id="offre" class="border-y border-slate-200 bg-white px-6 py-16">
+      <div class="mx-auto max-w-4xl text-center">
+        <h2 class="text-3xl font-bold text-slate-900">Une messagerie pensée pour votre entreprise</h2>
+        <p class="mt-4 text-lg leading-8 text-slate-600">L’objectif : permettre à chaque entreprise de disposer d’adresses e-mail professionnelles et d’un espace de stockage adapté à ses besoins.</p>
+        <div class="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-left text-sm leading-6 text-amber-900">
+          <strong>Prototype en préparation :</strong> la création réelle de boîtes e-mail, le stockage et les inscriptions ne sont pas encore activés. Aucun compte ni aucune adresse e-mail n’est créé par cette page. La mise en service nécessitera un domaine et un fournisseur de messagerie.
+        </div>
+      </div>
+    </section>
+  </main>
 
-        toggleAuthBtn.addEventListener('click', () => {
-            const current = !signupPanel.classList.contains('hidden');
-            showForm(current ? 'login' : 'signup');
-        });
-
-        function setStatus(type, message) {
-            statusBox.classList.remove('hidden');
-            statusBox.classList.remove('border-green-200', 'bg-green-50', 'text-green-700', 'dark:border-green-700', 'dark:bg-green-950/30', 'dark:text-green-300');
-            statusBox.classList.remove('border-red-200', 'bg-red-50', 'text-red-700', 'dark:border-red-700', 'dark:bg-red-950/30', 'dark:text-red-300');
-
-            if (type === 'success') {
-                statusBox.classList.add('border-green-200', 'bg-green-50', 'text-green-700', 'dark:border-green-700', 'dark:bg-green-950/30', 'dark:text-green-300');
-            } else {
-                statusBox.classList.add('border-red-200', 'bg-red-50', 'text-red-700', 'dark:border-red-700', 'dark:bg-red-950/30', 'dark:text-red-300');
-            }
-
-            statusBox.innerHTML = message;
-        }
-
-        function saveUserToLocalStorage(data) {
-            const existing = JSON.parse(localStorage.getItem('usersProPlateforme') || '[]');
-            existing.push(data);
-            localStorage.setItem('usersProPlateforme', JSON.stringify(existing));
-        }
-
-        function notifyAdminByEmail(name, email, company) {
-            const subject = encodeURIComponent('Nouvelle inscription sur votre plateforme');
-            const body = encodeURIComponent(
-                'Nouvelle inscription\n\n' +
-                'Nom : ' + name + '\n' +
-                'E-mail : ' + email + '\n' +
-                'Entreprise : ' + (company || 'Non renseignée') + '\n\n' +
-                'Cette notification a été générée depuis le formulaire d’inscription.'
-            );
-
-            const adminEmail = 'admin@votreentreprise.com';
-            const mailtoLink = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
-            window.location.href = mailtoLink;
-        }
-
-        async function trySupabaseSignup(data) {
-            const url = 'https://VOTRE-PROJET.supabase.co';
-            const key = 'VOTRE-CLE-ANON';
-
-            if (url.includes('VOTRE-PROJET') || key.includes('VOTRE-CLE')) {
-                return false;
-            }
-
-            try {
-                const supabase = window.supabase.createClient(url, key);
-                const { error } = await supabase.from('users').insert([{
-                    name: data.name,
-                    email: data.email,
-                    company: data.company,
-                    created_at: new Date().toISOString()
-                }]);
-
-                if (error) throw error;
-                return true;
-            } catch (err) {
-                console.error('Supabase signup error:', err);
-                return false;
-            }
-        }
-
-        document.getElementById('signupForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const name = document.getElementById('signup-name').value.trim();
-            const email = document.getElementById('signup-email').value.trim();
-            const password = document.getElementById('signup-password').value;
-            const company = document.getElementById('signup-company').value.trim();
-
-            if (!name || !email || !password) {
-                setStatus('error', 'Veuillez remplir tous les champs obligatoires.');
-                return;
-            }
-
-            const userData = { name, email, password, company, createdAt: new Date().toISOString() };
-            saveUserToLocalStorage(userData);
-
-            const supabaseOk = await trySupabaseSignup({ name, email, company });
-            if (supabaseOk) {
-                setStatus('success', `Inscription enregistrée avec succès. Un enregistrement a été envoyé à Supabase et une notification a été préparée pour l’administrateur.`);
-            } else {
-                setStatus('success', `Inscription enregistrée avec succès pour <strong>${email}</strong>. Une notification d’administrateur est prête à être envoyée.`);
-            }
-
-            notifyAdminByEmail(name, email, company);
-            document.getElementById('signupForm').reset();
-        });
-
-        document.getElementById('loginForm').addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-
-            if (!email || !password) {
-                setStatus('error', 'Veuillez entrer votre e-mail et votre mot de passe.');
-                return;
-            }
-
-            const users = JSON.parse(localStorage.getItem('usersProPlateforme') || '[]');
-            const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
-
-            if (!user) {
-                setStatus('error', 'Aucun compte trouvé pour cette adresse e-mail.');
-                return;
-            }
-
-            if (user.password !== password) {
-                setStatus('error', 'Le mot de passe est incorrect.');
-                return;
-            }
-
-            setStatus('success', `Bienvenue <strong>${user.name}</strong> ! Vous êtes maintenant connecté.`);
-            document.getElementById('loginForm').reset();
-        });
-    </script>
+  <footer class="mx-auto max-w-7xl px-6 py-8 text-center text-sm text-slate-500">
+    Mail Pro Company — Projet indépendant de messagerie professionnelle.
+  </footer>
 </body>
 </html>
