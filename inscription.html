@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mail Pro Company — Inscription & Connexion</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        try {
+            const s = localStorage.getItem('theme');
+            if (s === 'dark' || (!s && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
+        } catch (e) {}
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {
+                fontFamily: { sans: ['Inter','system-ui','sans-serif'] },
+                colors: { orange: { 50:'#fff5ed',100:'#ffe8d4',200:'#ffcfa8',300:'#ffac70',400:'#ff7d36',500:'#f97316',600:'#ea580c',700:'#c2410c' } }
+            }}
+        }
+    </script>
+    <style>.fade{animation:f .35s ease-out}@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}</style>
+</head>
+<body class="min-h-screen font-sans bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+
+<div class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+
+        <!-- Logo -->
+        <div class="flex flex-col items-center mb-6">
+            <svg width="56" height="56" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="g" x1="16" y1="20" x2="112" y2="108" gradientUnits="userSpaceOnUse"><stop stop-color="#ff8a3d"/><stop offset="1" stop-color="#ea580c"/></linearGradient></defs>
+                <rect x="16" y="24" width="96" height="80" rx="22" fill="url(#g)"/>
+                <path d="M34 50 L64 76 L94 50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M34 50 V82 a4 4 0 0 0 4 4 H90 a4 4 0 0 0 4 -4 V50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+                <circle cx="98" cy="30" r="6" fill="#14b8a6"/><circle cx="110" cy="42" r="5" fill="#8b5cf6"/><circle cx="108" cy="24" r="4" fill="#ec4899"/>
+            </svg>
+            <div class="mt-3 text-center leading-tight">
+                <div class="text-xs uppercase tracking-[0.22em] text-slate-400">Mail Pro</div>
+                <div class="text-xl font-black">Company</div>
+            </div>
+            <button onclick="toggleTheme()" class="mt-3 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Thème">
+                <svg class="w-5 h-5 hidden dark:block text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3a1 1 0 011 1v1a1 1 0 11-2 0V4a1 1 0 011-1zm0 5a4 4 0 100 8 4 4 0 000-8zm8 3a1 1 0 110 2h-1a1 1 0 110-2h1zM4 11a1 1 0 110 2H3a1 1 0 110-2h1zm2.05-6.36a1 1 0 011.41 0l.71.71A1 1 0 116.76 6.76l-.71-.71a1 1 0 010-1.41zm10.48 10.48a1 1 0 011.41 0l.71.71a1 1 0 01-1.41 1.41l-.71-.71a1 1 0 010-1.41zM6.76 17.24a1 1 0 010 1.41l-.71.71a1 1 0 01-1.41-1.41l.71-.71a1 1 0 011.41 0zM18.66 5.34a1 1 0 010 1.42l-.71.71a1 1 0 11-1.41-1.41l.71-.71a1 1 0 011.41-.01zM12 19a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"/></svg>
+                <svg class="w-5 h-5 block dark:hidden text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+            </button>
+        </div>
+
+        <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl p-6 md:p-8">
+
+            <!-- Inscription -->
+            <div id="signup-panel" class="fade">
+                <div class="mb-5"><p class="text-xs uppercase tracking-[0.25em] text-orange-500 font-bold">Inscription</p><h2 class="text-2xl font-bold mt-1.5">Créer votre compte</h2></div>
+                <form id="signupForm" class="space-y-3.5">
+                    <input type="text" id="su-name" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" placeholder="Nom complet" />
+                    <input type="email" id="su-email" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" placeholder="Adresse e-mail (Gmail, Yahoo, Outlook…)" />
+                    <input type="password" id="su-pass" required minlength="6" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" placeholder="Mot de passe (6 caractères min.)" />
+                    <input type="text" id="su-company" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" placeholder="Entreprise (facultatif)" />
+                    <button type="submit" id="su-btn" class="w-full py-3 rounded-xl bg-orange-500 text-white font-semibold shadow-sm hover:bg-orange-600 transition">Créer mon compte</button>
+                </form>
+            </div>
+
+            <!-- Connexion -->
+            <div id="login-panel" class="hidden fade">
+                <div class="mb-5"><p class="text-xs uppercase tracking-[0.25em] text-orange-500 font-bold">Connexion</p><h2 class="text-2xl font-bold mt-1.5">Accéder à mon espace</h2></div>
+                <form id="loginForm" class="space-y-3.5">
+                    <input type="email" id="li-email" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" placeholder="Adresse e-mail" />
+                    <input type="password" id="li-pass" required class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" placeholder="Mot de passe" />
+                    <button type="submit" id="li-btn" class="w-full py-3 rounded-xl bg-slate-900 dark:bg-slate-700 text-white font-semibold hover:bg-slate-800 dark:hover:bg-slate-600 transition">Se connecter</button>
+                </form>
+            </div>
+
+            <!-- Connecté -->
+            <div id="account-panel" class="hidden fade text-center">
+                <div class="w-14 h-14 mx-auto rounded-full bg-green-100 dark:bg-green-900/30 grid place-items-center text-green-600 dark:text-green-400 mb-4">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <h2 class="text-xl font-bold">Vous êtes connecté</h2>
+                <p id="acct-email" class="text-sm text-slate-500 mt-1"></p>
+                <button onclick="doLogout()" class="mt-6 w-full py-3 rounded-xl border border-slate-300 dark:border-slate-700 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition">Se déconnecter</button>
+            </div>
+
+            <!-- Séparateur + OAuth -->
+            <div id="oauth-zone">
+                <div class="my-5 flex items-center gap-3 text-xs text-slate-400"><span class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></span>ou<span class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></span></div>
+                <button onclick="oauth('google')" class="w-full py-3 rounded-xl border border-slate-300 dark:border-slate-700 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0012 23z"/><path fill="#fbbc05" d="M5.84 14.1a6.6 6.6 0 010-4.2V7.06H2.18a11 11 0 000 9.88l3.66-2.84z"/><path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+                    Continuer avec Google
+                </button>
+                <p class="mt-2 text-[11px] text-center text-slate-400">Le bouton Google s'activera une fois le fournisseur configuré.</p>
+            </div>
+
+            <div id="statusBox" class="hidden mt-4 rounded-2xl border p-3.5 text-sm font-medium"></div>
+
+            <p class="mt-5 text-center text-sm text-slate-500">
+                <button onclick="showForm('login')" id="link-login" class="font-semibold text-orange-500 hover:underline">J'ai déjà un compte</button>
+                <button onclick="showForm('signup')" id="link-signup" class="hidden font-semibold text-orange-500 hover:underline">Créer un compte</button>
+            </p>
+        </div>
+
+        <p class="mt-5 text-center text-xs text-slate-400">Comptes réels & sécurisés · gratuit · sans carte bancaire</p>
+    </div>
+</div>
+
+<script>
+    // --- Supabase (projet mail-pro-company) ---
+    const SUPABASE_URL = 'https://bojmdozjhxljhherjbfg.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_FsTiAajd2UPW2kLmO49Peg_t16vGU7a';
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const $ = (id) => document.getElementById(id);
+    const panels = { signup: $('signup-panel'), login: $('login-panel'), account: $('account-panel') };
+
+    function toggleTheme() {
+        const d = document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem('theme', d ? 'dark' : 'light'); } catch (e) {}
+    }
+    function status(type, msg) {
+        const b = $('statusBox');
+        b.className = 'mt-4 rounded-2xl border p-3.5 text-sm font-medium ' + (type === 'ok'
+            ? 'border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950/30 dark:text-green-300'
+            : type === 'info'
+            ? 'border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-800 dark:bg-orange-950/30 dark:text-orange-300'
+            : 'border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300');
+        b.innerHTML = msg; b.classList.remove('hidden');
+    }
+    function showForm(which) {
+        panels.signup.classList.toggle('hidden', which !== 'signup');
+        panels.login.classList.toggle('hidden', which !== 'login');
+        panels.account.classList.toggle('hidden', which !== 'account');
+        $('oauth-zone').classList.toggle('hidden', which === 'account');
+        $('link-login').classList.toggle('hidden', which !== 'signup');
+        $('link-signup').classList.toggle('hidden', which !== 'login');
+        const links = panels.account.classList.contains('hidden');
+        $('link-login').parentElement.classList.toggle('hidden', which === 'account');
+        $('statusBox').classList.add('hidden');
+    }
+
+    async function refresh() {
+        const { data } = await sb.auth.getUser();
+        if (data && data.user) { $('acct-email').textContent = data.user.email; showForm('account'); }
+    }
+    refresh();
+
+    // Inscription
+    $('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = $('su-name').value.trim(), email = $('su-email').value.trim(), pass = $('su-pass').value, company = $('su-company').value.trim();
+        $('su-btn').disabled = true; $('su-btn').textContent = 'Création…';
+        const { data, error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name, company } } });
+        $('su-btn').disabled = false; $('su-btn').textContent = 'Créer mon compte';
+        if (error) { status('err', error.message); return; }
+        if (data.session) { await refresh(); status('ok', 'Compte créé. Bienvenue !'); }
+        else { status('info', 'Compte créé ! Vérifiez votre boîte <strong>' + email + '</strong> pour confirmer votre adresse, puis connectez-vous.'); showForm('login'); }
+    });
+
+    // Connexion
+    $('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = $('li-email').value.trim(), pass = $('li-pass').value;
+        $('li-btn').disabled = true; $('li-btn').textContent = 'Connexion…';
+        const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+        $('li-btn').disabled = false; $('li-btn').textContent = 'Se connecter';
+        if (error) { status('err', 'E-mail ou mot de passe incorrect, ou adresse non confirmée.'); return; }
+        await refresh(); status('ok', 'Connecté !');
+    });
+
+    async function doLogout() { await sb.auth.signOut(); showForm('signup'); status('info', 'Vous êtes déconnecté.'); }
+
+    async function oauth(provider) {
+        const { error } = await sb.auth.signInWithOAuth({ provider, options: { redirectTo: window.location.href } });
+        if (error) status('err', 'Connexion ' + provider + ' pas encore activée. (À configurer dans Supabase → Authentication → Providers.)');
+    }
+</script>
+</body>
+</html>

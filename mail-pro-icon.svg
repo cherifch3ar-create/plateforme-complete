@@ -1,0 +1,17 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mail Pro Company">
+  <defs>
+    <linearGradient id="g" x1="16" y1="20" x2="112" y2="108" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff8a3d"/>
+      <stop offset="1" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <!-- Badge -->
+  <rect x="16" y="24" width="96" height="80" rx="22" fill="url(#g)"/>
+  <!-- Enveloppe : le pli dessine un M -->
+  <path d="M34 50 L64 76 L94 50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M34 50 V82 a4 4 0 0 0 4 4 H90 a4 4 0 0 0 4 -4 V50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9"/>
+  <!-- Points multicolores -->
+  <circle cx="98" cy="30" r="6" fill="#14b8a6"/>
+  <circle cx="110" cy="42" r="5" fill="#8b5cf6"/>
+  <circle cx="108" cy="24" r="4" fill="#ec4899"/>
+</svg>
