@@ -22,6 +22,15 @@
   </script>
 </head>
 <body class="h-full font-sans bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+  <div id="boot" style="position:fixed;inset:0;background:#ffffff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:99999;font-family:system-ui,-apple-system,sans-serif">
+    <div style="width:76px;height:76px;border-radius:22px;background:linear-gradient(135deg,#ff8a3d,#ea580c);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(234,88,12,.35)">
+      <svg width="42" height="42" viewBox="0 0 128 128" fill="none"><path d="M34 50 L64 76 L94 50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 50 V82 a4 4 0 0 0 4 4 H90 a4 4 0 0 0 4 -4 V50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/></svg>
+    </div>
+    <div style="color:#475569;font-size:14px;font-weight:600">Mail Pro Company</div>
+    <div style="width:26px;height:26px;border:3px solid #ffe8d4;border-top-color:#f97316;border-radius:50%;animation:mpcspin .8s linear infinite"></div>
+    <style>@keyframes mpcspin{to{transform:rotate(360deg)}}</style>
+  </div>
+
 <div class="h-full flex flex-col max-w-2xl mx-auto">
 
   <!-- En-tête -->
@@ -124,5 +133,8 @@
 
   init();
 </script>
+  <script>
+    (function(){var b=document.getElementById('boot');if(!b)return;function hide(){b.style.transition='opacity .3s';b.style.opacity='0';setTimeout(function(){b.remove();},300);}window.addEventListener('load',function(){setTimeout(hide,150);});setTimeout(hide,9000);})();
+  </script>
 </body>
 </html>
