@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ma boîte mail — Mail Pro Company</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#f97316" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    try { const s=localStorage.getItem('theme'); if (s==='dark'||(!s&&matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch(e){}
+    tailwind.config = { darkMode:'class', theme:{ extend:{
+      fontFamily:{ sans:['Inter','system-ui','sans-serif'] },
+      colors:{ orange:{50:'#fff5ed',100:'#ffe8d4',400:'#ff7d36',500:'#f97316',600:'#ea580c',700:'#c2410c'} }
+    }}}
+  </script>
+  <style>.fade{animation:f .2s ease}@keyframes f{from{opacity:0}to{opacity:1}}</style>
+</head>
+<body class="h-full font-sans bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+<div class="h-full flex flex-col">
+
+  <!-- En-tête -->
+  <header class="h-14 shrink-0 flex items-center justify-between px-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <svg width="30" height="30" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="16" y1="20" x2="112" y2="108" gradientUnits="userSpaceOnUse"><stop stop-color="#ff8a3d"/><stop offset="1" stop-color="#ea580c"/></linearGradient></defs><rect x="16" y="24" width="96" height="80" rx="22" fill="url(#g)"/><path d="M34 50 L64 76 L94 50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 50 V82 a4 4 0 0 0 4 4 H90 a4 4 0 0 0 4 -4 V50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/></svg>
+      <span class="font-black">Mail Pro Company</span>
+    </a>
+    <div class="flex items-center gap-3">
+      <span id="meEmail" class="hidden sm:block text-sm text-slate-500"></span>
+      <a href="#" id="authLink" class="text-sm font-medium text-slate-500 hover:text-orange-500">Connexion</a>
+    </div>
+  </header>
+
+  <!-- Non connecté -->
+  <div id="guard" class="hidden flex-1 grid place-items-center p-6 text-center">
+    <div>
+      <p class="text-slate-500">Connectez-vous pour accéder à votre boîte mail.</p>
+      <a href="inscription.html" class="inline-block mt-3 px-5 py-2.5 rounded-xl bg-orange-500 text-white text-sm font-semibold hover:bg-orange-600">Se connecter / s'inscrire</a>
+    </div>
+  </div>
+
+  <!-- App -->
+  <div id="app" class="hidden flex-1 min-h-0 flex">
+    <!-- Barre latérale -->
+    <aside class="w-16 sm:w-56 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 sm:p-3 flex flex-col">
+      <button onclick="openCompose()" class="mb-3 flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl py-3 font-semibold text-sm">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span class="hidden sm:inline">Rédiger</span>
+      </button>
+      <button id="tab-inbox" onclick="showFolder('inbox')" class="flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-sm font-semibold bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-300">
+        <span class="flex items-center gap-2.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 7l9 6 9-6M3 7v10a1 1 0 001 1h16a1 1 0 001-1V7M3 7a1 1 0 011-1h16a1 1 0 011 1"/></svg><span class="hidden sm:inline">Réception</span></span>
+        <span id="unread" class="hidden text-xs bg-orange-500 text-white rounded-full px-1.5"></span>
+      </button>
+      <button id="tab-sent" onclick="showFolder('sent')" class="mt-1 flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 11.5 20 4l-6.2 16-3.1-6.3L3 11.5Z"/></svg><span class="hidden sm:inline">Envoyés</span>
+      </button>
+    </aside>
+
+    <!-- Liste -->
+    <section id="listCol" class="w-full md:max-w-sm shrink-0 border-r border-slate-200 dark:border-slate-800 overflow-y-auto bg-white dark:bg-slate-900/40">
+      <div class="sticky top-0 px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur font-semibold" id="folderTitle">Réception</div>
+      <ul id="list" class="divide-y divide-slate-100 dark:divide-slate-800"></ul>
+      <p id="empty" class="hidden p-8 text-center text-sm text-slate-400">Aucun message.</p>
+    </section>
+
+    <!-- Lecture -->
+    <article id="reader" class="hidden md:flex flex-1 min-w-0 flex-col overflow-y-auto">
+      <div id="readerContent" class="p-6 md:p-8 max-w-3xl"></div>
+    </article>
+  </div>
+
+  <!-- Rédaction -->
+  <div id="composeModal" class="hidden fixed inset-0 z-40 flex items-end sm:items-center justify-center">
+    <div onclick="closeCompose()" class="absolute inset-0 bg-slate-900/50"></div>
+    <div class="relative w-full sm:max-w-lg bg-white dark:bg-slate-900 sm:rounded-2xl rounded-t-2xl border border-slate-200 dark:border-slate-700 shadow-2xl fade">
+      <div class="flex items-center justify-between px-5 py-3 border-b border-slate-200 dark:border-slate-700">
+        <h3 class="font-bold">Nouveau message</h3>
+        <button onclick="closeCompose()" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <form id="composeForm" class="p-5 space-y-3">
+        <input id="c-to" type="email" required placeholder="Destinataire (e-mail d'un inscrit)" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" />
+        <input id="c-subject" type="text" placeholder="Objet" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" />
+        <textarea id="c-body" rows="6" required placeholder="Votre message…" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"></textarea>
+        <div class="flex justify-end"><button type="submit" id="c-send" class="px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm">Envoyer</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-xl"></div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://bojmdozjhxljhherjbfg.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_FsTiAajd2UPW2kLmO49Peg_t16vGU7a';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const $ = (id) => document.getElementById(id);
+  let me = null, folder = 'inbox', cache = { inbox: [], sent: [] };
+
+  function toast(m){ const t=$('toast'); t.textContent=m; t.classList.remove('hidden'); clearTimeout(window.__t); window.__t=setTimeout(()=>t.classList.add('hidden'),2200); }
+  function esc(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+  function fmt(ts){ const d=new Date(ts); return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); }
+
+  async function init(){
+    const { data } = await sb.auth.getUser();
+    if (!data || !data.user){ $('guard').classList.remove('hidden'); $('authLink').href='inscription.html'; return; }
+    me = data.user;
+    $('app').classList.remove('hidden');
+    $('meEmail').textContent = me.email;
+    $('authLink').textContent = 'Déconnexion';
+    $('authLink').onclick = async (e)=>{ e.preventDefault(); await sb.auth.signOut(); location.href='inscription.html'; };
+    await load();
+    sb.channel('mails-'+me.id)
+      .on('postgres_changes', { event:'INSERT', schema:'public', table:'mails' }, () => load())
+      .subscribe();
+  }
+
+  async function load(){
+    const inbox = await sb.from('mails').select('*').ilike('recipient_email', me.email).order('created_at',{ascending:false});
+    const sent  = await sb.from('mails').select('*').eq('sender_id', me.id).order('created_at',{ascending:false});
+    cache.inbox = inbox.data || [];
+    cache.sent  = sent.data || [];
+    const unread = cache.inbox.filter(m=>!m.is_read).length;
+    const u=$('unread'); if(unread>0){ u.textContent=unread; u.classList.remove('hidden'); } else u.classList.add('hidden');
+    render();
+  }
+
+  function showFolder(f){
+    folder=f;
+    $('folderTitle').textContent = f==='inbox' ? 'Réception' : 'Envoyés';
+    $('tab-inbox').className = 'flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-sm '+(f==='inbox'?'font-semibold bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-300':'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800');
+    $('tab-sent').className = 'mt-1 flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm '+(f==='sent'?'font-semibold bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-300':'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800');
+    render();
+  }
+
+  function render(){
+    const items = cache[folder];
+    const list = $('list'); list.innerHTML='';
+    $('empty').classList.toggle('hidden', items.length>0);
+    items.forEach(m=>{
+      const who = folder==='inbox' ? m.sender_email : 'À : '+m.recipient_email;
+      const li = document.createElement('li');
+      li.className='px-4 py-3.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 '+(folder==='inbox'&&!m.is_read?'bg-orange-50/40 dark:bg-orange-500/5':'');
+      li.innerHTML = '<div class="flex items-center justify-between gap-2"><p class="text-sm '+(folder==='inbox'&&!m.is_read?'font-bold':'font-medium')+' truncate">'+esc(who)+'</p><span class="text-xs text-slate-400 shrink-0">'+fmt(m.created_at)+'</span></div>'
+        + '<p class="text-sm '+(folder==='inbox'&&!m.is_read?'font-semibold':'')+' truncate">'+esc(m.subject)+'</p>'
+        + '<p class="text-xs text-slate-500 truncate">'+esc(m.body)+'</p>';
+      li.onclick = ()=>openMail(m);
+      list.appendChild(li);
+    });
+  }
+
+  async function openMail(m){
+    if (folder==='inbox' && !m.is_read){ await sb.from('mails').update({is_read:true}).eq('id', m.id); m.is_read=true; load(); }
+    $('reader').classList.remove('hidden'); $('reader').classList.add('flex');
+    $('readerContent').innerHTML =
+      '<h2 class="text-2xl font-black mb-4">'+esc(m.subject)+'</h2>'
+      + '<div class="flex items-center gap-3 mb-5"><div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-500/20 text-orange-600 grid place-items-center font-bold">'+esc((m.sender_email||'?')[0].toUpperCase())+'</div>'
+      + '<div><div class="text-sm font-semibold">'+esc(m.sender_email)+'</div><div class="text-xs text-slate-500">À : '+esc(m.recipient_email)+' · '+fmt(m.created_at)+'</div></div></div>'
+      + '<div class="text-sm leading-relaxed whitespace-pre-wrap">'+esc(m.body)+'</div>'
+      + '<button onclick="reply(\''+esc(m.sender_email)+'\',\''+esc(m.subject)+'\')" class="mt-6 px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm">Répondre</button>';
+  }
+
+  function reply(to, subject){ openCompose(); $('c-to').value=to; $('c-subject').value = subject.startsWith('Re: ')?subject:'Re: '+subject; $('c-body').focus(); }
+  function openCompose(){ $('composeModal').classList.remove('hidden'); }
+  function closeCompose(){ $('composeModal').classList.add('hidden'); }
+
+  $('composeForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    $('c-send').disabled=true; $('c-send').textContent='Envoi…';
+    const { error } = await sb.from('mails').insert({
+      sender_id: me.id, sender_email: me.email,
+      recipient_email: $('c-to').value.trim(),
+      subject: $('c-subject').value.trim() || '(sans objet)',
+      body: $('c-body').value.trim()
+    });
+    $('c-send').disabled=false; $('c-send').textContent='Envoyer';
+    if (error){ toast('Erreur : '+error.message); return; }
+    closeCompose(); $('composeForm').reset(); toast('Message envoyé ✓'); showFolder('sent'); load();
+  });
+
+  init();
+</script>
+</body>
+</html>
