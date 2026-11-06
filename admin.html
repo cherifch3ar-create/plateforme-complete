@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Mail Pro Company</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#f97316" />
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    try { const s=localStorage.getItem('theme'); if (s==='dark'||(!s&&matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch(e){}
+    tailwind.config = { darkMode:'class', theme:{ extend:{ fontFamily:{ sans:['Inter','system-ui','sans-serif'] },
+      colors:{ orange:{50:'#fff5ed',100:'#ffe8d4',400:'#ff7d36',500:'#f97316',600:'#ea580c',700:'#c2410c'} } }}}
+  </script>
+</head>
+<body class="min-h-full font-sans bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+
+  <header class="h-14 flex items-center justify-between px-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-0 z-10">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <svg width="30" height="30" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="16" y1="20" x2="112" y2="108" gradientUnits="userSpaceOnUse"><stop stop-color="#ff8a3d"/><stop offset="1" stop-color="#ea580c"/></linearGradient></defs><rect x="16" y="24" width="96" height="80" rx="22" fill="url(#g)"/><path d="M34 50 L64 76 L94 50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 50 V82 a4 4 0 0 0 4 4 H90 a4 4 0 0 0 4 -4 V50" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/></svg>
+      <span class="font-black">Admin · Mail Pro</span>
+    </a>
+    <a href="#" id="authLink" class="text-sm font-medium text-slate-500 hover:text-orange-500">Connexion</a>
+  </header>
+
+  <!-- Accès refusé / non connecté -->
+  <div id="denied" class="hidden max-w-md mx-auto mt-24 text-center p-6">
+    <div class="w-14 h-14 mx-auto rounded-full bg-red-100 dark:bg-red-900/30 grid place-items-center text-red-500 mb-4"><svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+    <h2 class="text-xl font-bold" id="deniedTitle">Accès réservé à l'administrateur</h2>
+    <p class="text-sm text-slate-500 mt-2" id="deniedMsg">Connectez-vous avec le compte administrateur.</p>
+    <a href="inscription.html" class="inline-block mt-4 px-5 py-2.5 rounded-xl bg-orange-500 text-white text-sm font-semibold hover:bg-orange-600">Se connecter</a>
+  </div>
+
+  <!-- Tableau de bord -->
+  <main id="dash" class="hidden max-w-6xl mx-auto px-4 py-6 space-y-8">
+    <div class="grid grid-cols-3 gap-3">
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"><div class="text-xs uppercase tracking-widest text-slate-400">Comptes</div><div id="nbUsers" class="text-3xl font-black text-orange-500 mt-1">—</div></div>
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"><div class="text-xs uppercase tracking-widest text-slate-400">E-mails</div><div id="nbMails" class="text-3xl font-black text-orange-500 mt-1">—</div></div>
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"><div class="text-xs uppercase tracking-widest text-slate-400">Messages chat</div><div id="nbMsgs" class="text-3xl font-black text-orange-500 mt-1">—</div></div>
+    </div>
+
+    <!-- Comptes -->
+    <section>
+      <h2 class="font-bold text-lg mb-3">Comptes utilisateurs</h2>
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-x-auto">
+        <table class="w-full text-sm"><thead class="text-left text-slate-400 border-b border-slate-200 dark:border-slate-800"><tr><th class="px-4 py-3 font-semibold">Nom</th><th class="px-4 py-3 font-semibold">Entreprise</th><th class="px-4 py-3 font-semibold">Créé le</th><th class="px-4 py-3"></th></tr></thead><tbody id="usersBody"></tbody></table>
+        <p id="usersEmpty" class="hidden p-6 text-center text-slate-400 text-sm">Aucun compte.</p>
+      </div>
+    </section>
+
+    <!-- E-mails -->
+    <section>
+      <h2 class="font-bold text-lg mb-3">E-mails (boîtes internes)</h2>
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-x-auto">
+        <table class="w-full text-sm"><thead class="text-left text-slate-400 border-b border-slate-200 dark:border-slate-800"><tr><th class="px-4 py-3 font-semibold">De</th><th class="px-4 py-3 font-semibold">À</th><th class="px-4 py-3 font-semibold">Objet</th><th class="px-4 py-3 font-semibold">Date</th><th class="px-4 py-3"></th></tr></thead><tbody id="mailsBody"></tbody></table>
+        <p id="mailsEmpty" class="hidden p-6 text-center text-slate-400 text-sm">Aucun e-mail.</p>
+      </div>
+    </section>
+
+    <!-- Chat -->
+    <section>
+      <h2 class="font-bold text-lg mb-3">Messages (chat agent)</h2>
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-x-auto">
+        <table class="w-full text-sm"><thead class="text-left text-slate-400 border-b border-slate-200 dark:border-slate-800"><tr><th class="px-4 py-3 font-semibold">Rôle</th><th class="px-4 py-3 font-semibold">Message</th><th class="px-4 py-3 font-semibold">Date</th><th class="px-4 py-3"></th></tr></thead><tbody id="msgsBody"></tbody></table>
+        <p id="msgsEmpty" class="hidden p-6 text-center text-slate-400 text-sm">Aucun message.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm shadow-xl"></div>
+
+<script>
+  const SUPABASE_URL = 'https://bojmdozjhxljhherjbfg.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_FsTiAajd2UPW2kLmO49Peg_t16vGU7a';
+  const ADMIN_EMAIL = 'cherifch3ar@gmail.com';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const $ = (id)=>document.getElementById(id);
+  function toast(m){ const t=$('toast'); t.textContent=m; t.classList.remove('hidden'); clearTimeout(window.__t); window.__t=setTimeout(()=>t.classList.add('hidden'),2200); }
+  function esc(s){ const d=document.createElement('div'); d.textContent=s==null?'':s; return d.innerHTML; }
+  function fmt(ts){ return new Date(ts).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}); }
+
+  async function init(){
+    const { data } = await sb.auth.getUser();
+    if (!data || !data.user){ $('denied').classList.remove('hidden'); return; }
+    $('authLink').textContent='Déconnexion';
+    $('authLink').onclick = async (e)=>{ e.preventDefault(); await sb.auth.signOut(); location.href='inscription.html'; };
+    if ((data.user.email||'').toLowerCase() !== ADMIN_EMAIL){
+      $('deniedTitle').textContent='Accès refusé';
+      $('deniedMsg').textContent='Ce compte ('+data.user.email+') n\'est pas administrateur.';
+      $('denied').classList.remove('hidden'); return;
+    }
+    $('dash').classList.remove('hidden');
+    loadAll();
+  }
+
+  async function loadAll(){
+    const [users, mails, msgs] = await Promise.all([
+      sb.from('profiles').select('*').order('created_at',{ascending:false}),
+      sb.from('mails').select('*').order('created_at',{ascending:false}),
+      sb.from('messages').select('*').order('created_at',{ascending:false})
+    ]);
+    const U=users.data||[], M=mails.data||[], G=msgs.data||[];
+    $('nbUsers').textContent=U.length; $('nbMails').textContent=M.length; $('nbMsgs').textContent=G.length;
+
+    $('usersEmpty').classList.toggle('hidden',U.length>0);
+    $('usersBody').innerHTML = U.map(u=>`<tr class="border-b border-slate-100 dark:border-slate-800">
+      <td class="px-4 py-3">${esc(u.full_name)||'<span class=\"text-slate-400\">—</span>'}</td>
+      <td class="px-4 py-3">${esc(u.company)||'<span class=\"text-slate-400\">—</span>'}</td>
+      <td class="px-4 py-3 text-slate-500">${fmt(u.created_at)}</td>
+      <td class="px-4 py-3 text-right"><button onclick="editUser('${u.id}','${esc(u.full_name)}','${esc(u.company)}')" class="text-orange-500 hover:underline mr-3">Modifier</button><button onclick="del('profiles','${u.id}')" class="text-red-500 hover:underline">Suppr.</button></td></tr>`).join('');
+
+    $('mailsEmpty').classList.toggle('hidden',M.length>0);
+    $('mailsBody').innerHTML = M.map(m=>`<tr class="border-b border-slate-100 dark:border-slate-800">
+      <td class="px-4 py-3">${esc(m.sender_email)}</td><td class="px-4 py-3">${esc(m.recipient_email)}</td>
+      <td class="px-4 py-3">${esc(m.subject)}</td><td class="px-4 py-3 text-slate-500">${fmt(m.created_at)}</td>
+      <td class="px-4 py-3 text-right"><button onclick="del('mails','${m.id}')" class="text-red-500 hover:underline">Suppr.</button></td></tr>`).join('');
+
+    $('msgsEmpty').classList.toggle('hidden',G.length>0);
+    $('msgsBody').innerHTML = G.map(g=>`<tr class="border-b border-slate-100 dark:border-slate-800">
+      <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs ${g.role==='agent'?'bg-orange-100 text-orange-600':'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}">${esc(g.role)}</span></td>
+      <td class="px-4 py-3 max-w-xs truncate">${esc(g.body)}</td><td class="px-4 py-3 text-slate-500">${fmt(g.created_at)}</td>
+      <td class="px-4 py-3 text-right"><button onclick="del('messages','${g.id}')" class="text-red-500 hover:underline">Suppr.</button></td></tr>`).join('');
+  }
+
+  async function del(table,id){
+    if (!confirm('Supprimer cet élément ?')) return;
+    const { error } = await sb.from(table).delete().eq('id',id);
+    if (error){ toast('Erreur : '+error.message); return; }
+    toast('Supprimé ✓'); loadAll();
+  }
+  async function editUser(id, name, company){
+    const n = prompt('Nom complet :', name==='null'?'':name); if (n===null) return;
+    const c = prompt('Entreprise :', company==='null'?'':company); if (c===null) return;
+    const { error } = await sb.from('profiles').update({ full_name:n, company:c }).eq('id',id);
+    if (error){ toast('Erreur : '+error.message); return; }
+    toast('Modifié ✓'); loadAll();
+  }
+
+  init();
+</script>
+</body>
+</html>
